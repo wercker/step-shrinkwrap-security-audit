@@ -1,0 +1,22 @@
+{
+  "name": "step-shrinkwrap-security-audit",
+  "version": "1.0.0-pre1",
+  "description": "A simple wercker step to check the npm-shrinkwrap file for certain vulnerabilities using nodesecurity.io",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wercker",
+    "npm",
+    "security",
+    "sshrinkwrap",
+    "nodesecurity.io"
+  ],
+  "author": "bvdberg",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "request": "^2.36.0",
+    "underscore": "^1.4.4"
+  }
+}
