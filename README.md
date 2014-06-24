@@ -8,12 +8,21 @@ This step will send the shrinkwrap file to nodesecurity.io. If any vulnerable mo
 
 # Example
 
-This will run `shrinkwrap-security-audit` using the default shrinkwrap file.
+This example will run the step using the default settings: 
 
 ```
 build:
     steps:
         - shrinkwrap-security-audit
+```
+
+It is also possible to use a different shrinkwrap path:
+
+```
+build:
+    steps:
+        - shrinkwrap-security-audit:
+        	shrinkwrap-path: src/npm-shrinkwrap.json
 ```
 
 # What's new
@@ -22,7 +31,7 @@ build:
 
 # Options
 
-- `shrinkwrap-path` (optional) The path to the shrinkwrap file. Defaults to `./shrinkwrap`.
+- `shrinkwrap-path` (optional) The path to the shrinkwrap file. Defaults to `./npm-shrinkwrap.json`.
 
 # TODO
 

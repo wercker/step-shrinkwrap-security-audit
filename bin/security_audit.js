@@ -1,6 +1,5 @@
-var request = require('request');
-var underscore = require('underscore');
 var fs = require('fs');
+var request = require('request');
 
 var shrinkwrapPath = process.argv[2];
 var shrinkwrapStream = fs.createReadStream(shrinkwrapPath);
@@ -17,17 +16,17 @@ var requestOptions = {
 var post = request(requestOptions, function(err, resp, body) {
     'use strict';
     if (err) {
-        console.error("Unable to make request");
+        console.error('Unable to make request');
         process.exit(33);
     }
 
     if (!body || !body.length) {
-        console.error("Expecting response to be a json array");
+        console.error('Expecting response to be a json array');
         process.exit(34);
     }
 
     if (body.length === 0) {
-        console.log("No Vulnerable modules detected.");
+        console.log('No vulnerable modules detected.');
         process.exit(0);
     }
     else {

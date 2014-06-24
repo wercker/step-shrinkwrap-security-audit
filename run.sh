@@ -1,39 +1,68 @@
 
-check_for_node() {
-    command -v node > /dev/null 2>&1 || \
-        { echo >&2 "node executable is not found. Make sure it is available in \$PATH"; exit 23; }
+# Check if command exists exists in the current path
+# $1: Name of the command to check
+# return 0 if it does exist, return 1 if it does not exits
+command_exists() {
+    local command_name=$1;
+
+    command -v "$command_name" > /dev/null 2>&1
 }
 
-check_shrinkwrap_path() {
-    local shrinkwrap_path=$1;
+# Check if a file exists and if it is a file.
+# $1: Path to the file to check
+# return 0 if it does exist, return 1 if it does not exist
+is_file() {
+    local path=$1
 
-    if [ ! -f "$shrinkwrap_path" ]; then
-        echo >&2 "shrinkwrap file not found";
-        return 1;
-    fi;
-
-    return 0;
+    [ -f "$path" ]
 }
 
+# Execute nodejs script to do the actual security audit
+# $1: Path to step root directory.
+# $2: Path to shrinkwrap file.
 security_audit() {
-    local shrinkwrap_path=$1;
+    local step_path=$1
+    local shrinkwrap_path=$2
     
-    node "./bin/security_audit" "$shrinkwrap_path" 
+    node "$step_path/bin/security_audit.js" "$shrinkwrap_path"
+}
+
+# Get the path to the shrinkwrap file. First checks the wercker parameter, 
+# otherwise uses the default "./npm-shrinkwrap.json"
+# returns the path by echo
+get_shrinkwrap_path() {
+    if [ -n "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_PATH" ]; then
+        echo "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_PATH"
+    else 
+        echo "./npm-shrinkwrap.json"
+    fi
+}
+
+# Get the path to the wercker step root. First checks if running in a wercker environment, 
+# otherwise uses the $PWD
+# returns the path by echo
+get_step_path() {
+    if [ -n "$WERCKER_STEP_ROOT" ]; then
+        echo "$WERCKER_STEP_ROOT"
+    else
+        echo "$PWD"
+    fi
 }
 
 main() {
-    check_for_node;
-
-    local step_path=${WERCKER_STEP_ROOT:-$PWD};
-    local shrinkwrap_path='./npm-shrinkwrap.json';
-
-    if [ -n "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_PATH" ]; then
-        shrinkwrap_path="$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_PATH";
+    set -e
+    if ! command_exists "node"; then
+        fail "node not found, make sure it exists in the \$PATH"
     fi
+    
+    local step_path=$(get_step_path)
+    local shrinkwrap_path=$(get_shrinkwrap_path)
 
-    if check_shrinkwrap_path "$shrinkwrap_path"; then 
-        security_audit "$shrinkwrap_path";
-    fi;
+    if is_file "$shrinkwrap_path"; then 
+        security_audit "$step_path" "$shrinkwrap_path"
+    else 
+        fail "Shrinkwrap file was not found"
+    fi
 }
 
-main;
+main

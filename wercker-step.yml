@@ -1,0 +1,9 @@
+name: shrinkwrap-security-audit
+version: 1.0.0-pre3
+description: A wercker step to check the npm-shrinkwrap file for vulnerable modules using nodesecurity.io
+keywords:
+  - security
+  - nodejs
+  - shrinkwrap
+  - npm
+  - nodesecurity.io
