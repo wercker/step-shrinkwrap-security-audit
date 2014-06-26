@@ -16,6 +16,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "request": "^2.36.0"
+    "request": "^2.36.0",
+    "underscore": "^1.6.0"
   }
 }

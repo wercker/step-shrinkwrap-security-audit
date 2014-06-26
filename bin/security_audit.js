@@ -1,5 +1,6 @@
 var fs = require('fs');
 var request = require('request');
+var underscore = require('underscore');
 
 var shrinkwrapPath = process.argv[2];
 var shrinkwrapStream = fs.createReadStream(shrinkwrapPath);
@@ -20,7 +21,7 @@ var post = request(requestOptions, function(err, resp, body) {
         process.exit(33);
     }
 
-    if (!body || !body.length) {
+    if (!body || !underscore.isArray(body)) {
         console.error('Expecting response to be a json array');
         process.exit(34);
     }
