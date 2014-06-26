@@ -1,6 +1,6 @@
 {
   "name": "step-shrinkwrap-security-audit",
-  "version": "1.0.0-pre3",
+  "version": "1.0.0",
   "description": "A step to check the npm-shrinkwrap.json file for vulnerable modules using nodesecurity.io",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
