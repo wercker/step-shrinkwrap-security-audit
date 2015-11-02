@@ -1,13 +1,14 @@
 # Node security shrinkwrap audit
 
 This step will install/run the [nsp](https://github.com/nodesecurity/nsp) 
-command, which will be used to check your npm-shrinkwrap.json and node\_modules
+command, which will be used to check your npm-shrinkwrap.json and node_modules
 for vulnerabilities.
 
 # Requirements
 
 - Node.js
 - npm
+- shrinkwrap
 
 # Example
 
@@ -22,8 +23,6 @@ build:
 # What's new
 
 - switch to nsp command/module
-
-- Initial release.
 
 # TODO
 
