@@ -1,10 +1,14 @@
 # Node security shrinkwrap audit
 
-This step will send the shrinkwrap file to nodesecurity.io. If any vulnerable modules are found, than this step will fail.
+This step will install/run the [nsp](https://github.com/nodesecurity/nsp) 
+command, which will be used to check your npm-shrinkwrap.json and node_modules
+for vulnerabilities.
 
 # Requirements
 
 - Node.js
+- npm
+- shrinkwrap
 
 # Example
 
@@ -16,22 +20,9 @@ build:
         - shrinkwrap-security-audit
 ```
 
-It is also possible to use a different shrinkwrap path:
-
-```
-build:
-    steps:
-        - shrinkwrap-security-audit:
-        	shrinkwrap-path: src/npm-shrinkwrap.json
-```
-
 # What's new
 
-- Initial release.
-
-# Options
-
-- `shrinkwrap-path` (optional) The path to the shrinkwrap file. Defaults to `./npm-shrinkwrap.json`.
+- switch to nsp command/module
 
 # TODO
 
@@ -42,6 +33,9 @@ TODO
 The MIT License (MIT)
 
 # Changelog
+
+## 2.0.0
+- switch to nsp
 
 ## 1.0.0
 
