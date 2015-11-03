@@ -1,5 +1,5 @@
 name: shrinkwrap-security-audit
-version: 2.0.0
+version: 1.0.0
 description: A step to check the npm-shrinkwrap.json file for vulnerable modules using nodesecurity.io
 keywords:
   - security
@@ -7,3 +7,7 @@ keywords:
   - shrinkwrap
   - npm
   - nodesecurity.io
+properties:
+  ignore:
+    type: string
+    required: false

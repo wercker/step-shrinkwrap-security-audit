@@ -19,6 +19,46 @@ try {
   process.exit(1);
 }
 
+try {
+  var ignore = parseIgnores(process.argv[3]);
+} catch(e) {
+  console.error("Invalid ignore list specified. Should be formatted like:")
+  console.error('request=https://nodesecurity.io/advisories/28, request=https://nodesecurity.io/advisories/29');
+}
+
+function parseIgnores(toIgnore) {
+  var ignore = {};
+
+  if (!toIgnore) {
+    return ignore;
+  }
+
+  var items = toIgnore.split(',');
+  underscore.each(items, function(item) {
+    var values = item.split("=");
+    var module = values[0].trim();
+    var advisory = values[1].trim();
+
+    if (!ignore[module]) {
+      ignore[module] = [];
+    }
+    ignore[module].push(advisory);
+  });
+
+  return ignore;
+}
+
+if (Object.keys(ignore).length) {
+  console.log('\nIngoring:'.bold)
+  var keys = Object.keys(ignore);
+  underscore.each(keys, function(key) {
+    console.log(' - module: ' + key);
+    underscore.each(ignore[key], function(url) {
+      console.log('   - ' + url);
+    });
+  });
+}
+
 // Api call requires a package.json. A nice extra feature would be to allow
 // the step to use a real package.json
 var staticPackageJSON = {
@@ -56,13 +96,33 @@ var post = request(requestOptions, function(err, resp, body) {
   }
 
   console.log('\n' + body.length.toString().red.bold + ' vulnerabilities/issues detected: \n'.bold);
+
+  var ignored = 0;
+
   body.forEach(function(vulnerability) {
-    console.log('Title:    ' + vulnerability.title);
-    console.log('Module:   ' + vulnerability.module);
+    var name = vulnerability.module;
+    var advisory = vulnerability.advisory;
+
+    var extra = '';
+    if (ignore[name] && ignore[name].indexOf(advisory) !== -1) {
+      ignored ++;
+      extra = '(ingored)'.yellow;
+    }
+    console.log('Title:    ' + vulnerability.title + ' ' + extra);
+    console.log('Module:   ' + name);
     console.log('version:  ' + vulnerability.version);
     console.log('Patched:  ' + vulnerability.patched_versions);
     console.log('Path:     ' + vulnerability.path.join(' > '));
-    console.log('Advisory: ' + vulnerability.advisory + '\n');
+    console.log('Advisory: ' + advisory + '\n');
   });
+
+  if (ignored === body.length) {
+    console.log('Skipped all found vulnerabilities'.yellow);
+    process.exit(0);
+  } else {
+    if (ignored) {
+      console.log('Ignored ' + ignored.toString().yellow  + ' vulnerabilities.');
+    }
+  }
   process.exit(9);
 });

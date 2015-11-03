@@ -1,3 +1,4 @@
+#!/bin/sh
 
 # Check if command exists exists in the current path
 # $1: Name of the command to check
@@ -23,22 +24,22 @@ is_file() {
 security_audit() {
     local step_path=$1
     local shrinkwrap_path=$2
-    
+
     node "$step_path/bin/security_audit.js" "$shrinkwrap_path"
 }
 
-# Get the path to the shrinkwrap file. First checks the wercker parameter, 
+# Get the path to the shrinkwrap file. First checks the wercker parameter,
 # otherwise uses the default "./npm-shrinkwrap.json"
 # returns the path by echo
 get_shrinkwrap_path() {
     if [ -n "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_PATH" ]; then
         echo "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_PATH"
-    else 
+    else
         echo "./npm-shrinkwrap.json"
     fi
 }
 
-# Get the path to the wercker step root. First checks if running in a wercker environment, 
+# Get the path to the wercker step root. First checks if running in a wercker environment,
 # otherwise uses the $PWD
 # returns the path by echo
 get_step_path() {
@@ -49,18 +50,31 @@ get_step_path() {
     fi
 }
 
+get_ignores() {
+    if [ -n "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_IGNORE" ]; then
+        echo "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_IGNORE";
+    else
+        echo ""
+    fi
+}
+
 main() {
     set -e
     if ! command_exists "node"; then
         fail "node not found, make sure it exists in the \$PATH"
     fi
-    
-    local step_path=$(get_step_path)
-    local shrinkwrap_path=$(get_shrinkwrap_path)
 
-    if is_file "$shrinkwrap_path"; then 
-        security_audit "$step_path" "$shrinkwrap_path"
-    else 
+    local step_path
+    local shrinkwrap_path
+    local ignores
+
+    step_path=$(get_step_path)
+    shrinkwrap_path=$(get_shrinkwrap_path)
+    ignores=$(get_ignores)
+
+    if is_file "$shrinkwrap_path"; then
+        security_audit "$step_path" "$shrinkwrap_path" "$ignores"
+    else
         fail "Shrinkwrap file was not found"
     fi
 }
