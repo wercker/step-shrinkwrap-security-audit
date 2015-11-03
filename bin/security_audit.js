@@ -4,7 +4,20 @@ var request = require('request');
 var underscore = require('underscore');
 
 var shrinkwrapPath = process.argv[2];
-var shrinkwrapData = JSON.parse(fs.readFileSync(shrinkwrapPath));
+
+try {
+  var fileData = fs.readFileSync(shrinkwrapPath);
+} catch(e) {
+  console.error('Unable to read shrinkwrap file');
+  process.exit(1);
+}
+
+try {
+  var shrinkwrapData = JSON.parse(fileData);
+} catch(e) {
+  console.error('Invalid json data in shrinkwrap file');
+  process.exit(1);
+}
 
 // Api call requires a package.json. A nice extra feature would be to allow
 // the step to use a real package.json
