@@ -31,9 +31,7 @@ It is also possible to ignore advisories for modules:
 build:
     steps:
         - shrinkwrap-security-audit:
-            ignore: >
-                qs=https://nodesecurity.io/advisories/28,
-                qs=https://nodesecurity.io/advisories/29
+            ignore: "qs=https://nodesecurity.io/advisories/28,qs=https://nodesecurity.io/advisories/29"
 ```
 
 # What's new
@@ -72,6 +70,10 @@ TODO
 The MIT License (MIT)
 
 # Changelog
+
+## 2.0.2
+- updatd examples and hints (avoiding a \n issue)
+
 
 ## 2.0.1
 - fix: `ignore` parameter (problem: partially passed in run.sh)

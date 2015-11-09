@@ -22,9 +22,11 @@ try {
 try {
   var ignore = parseIgnores(process.argv[3]);
 } catch(e) {
-  console.error("Invalid ignore list specified. Should be formatted like:")
-  console.error('requesthttps://nodesecurity.io/advisories/28,requesthttps://nodesecurity.io/advisories/29');
+  console.error('Invalid ignore list specified. Should be formatted like:')
+  console.error('request=https://nodesecurity.io/advisories/28,request=https://nodesecurity.io/advisories/29');
 }
+
+console.log(process.argv);
 
 function parseIgnores(toIgnore) {
   var ignore = {};
@@ -35,7 +37,7 @@ function parseIgnores(toIgnore) {
 
   var items = toIgnore.split(',');
   underscore.each(items, function(item) {
-    var values = item.split("=");
+    var values = item.split('=');
     var module = values[0].trim();
     var advisory = values[1].trim();
 
