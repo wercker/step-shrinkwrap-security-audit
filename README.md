@@ -73,10 +73,10 @@ The MIT License (MIT)
 
 # Changelog
 
-## 2.1.0
+## 2.0.0
 - add `ignore` support
 
-## 2.0.0
+## 1.1.0
 
 - update api call to api.nodescurity.io
 
