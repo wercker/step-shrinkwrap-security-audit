@@ -73,6 +73,9 @@ The MIT License (MIT)
 
 # Changelog
 
+## 2.0.1
+- fix: `ignore` parameter (problem: partially passed in run.sh)
+
 ## 2.0.0
 - add `ignore` support
 

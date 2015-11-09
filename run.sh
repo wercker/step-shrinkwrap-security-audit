@@ -24,8 +24,9 @@ is_file() {
 security_audit() {
     local step_path=$1
     local shrinkwrap_path=$2
+    local ignores=$3
 
-    node "$step_path/bin/security_audit.js" "$shrinkwrap_path"
+    node "$step_path/bin/security_audit.js" "$shrinkwrap_path" "$ignores"
 }
 
 # Get the path to the shrinkwrap file. First checks the wercker parameter,
@@ -51,10 +52,10 @@ get_step_path() {
 }
 
 get_ignores() {
-    if [ -n "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_IGNORE" ]; then
-        echo "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_SHRINKWRAP_IGNORE";
+    if [ -n "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_IGNORE" ]; then
+        echo "$WERCKER_SHRINKWRAP_SECURITY_AUDIT_IGNORE";
     else
-        echo ""
+        echo " "
     fi
 }
 

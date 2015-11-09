@@ -23,7 +23,7 @@ try {
   var ignore = parseIgnores(process.argv[3]);
 } catch(e) {
   console.error("Invalid ignore list specified. Should be formatted like:")
-  console.error('request=https://nodesecurity.io/advisories/28, request=https://nodesecurity.io/advisories/29');
+  console.error('requesthttps://nodesecurity.io/advisories/28,requesthttps://nodesecurity.io/advisories/29');
 }
 
 function parseIgnores(toIgnore) {
