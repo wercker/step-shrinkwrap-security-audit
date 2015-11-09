@@ -25,10 +25,20 @@ build:
         	shrinkwrap-path: src/npm-shrinkwrap.json
 ```
 
+It is also possible to ignore advisories for modules:
+
+```
+build:
+    steps:
+        - shrinkwrap-security-audit:
+            ignore: >
+                qs=https://nodesecurity.io/advisories/28,
+                qs=https://nodesecurity.io/advisories/29
+```
+
 # What's new
 
-Switched api call to api.nodesecurity.io. Output has also been improved showing the path of the module
-that has the vulnerability. Example output:
+Switched api call to api.nodesecurity.io. Output has also been improved showing the path of the module  that has the vulnerability. Example output:
 
 ``` text
 2 vulnerabilities/issues detected:
@@ -51,6 +61,7 @@ Advisory: https://nodesecurity.io/advisories/29
 # Options
 
 - `shrinkwrap-path` (optional) The path to the shrinkwrap file. Defaults to `./npm-shrinkwrap.json`.
+- `ignore` (optional) Comma separated list of advisories to ignore. The list is formatted as: moduleA=advisoryURL, moduleB=advisoryURL
 
 # TODO
 
@@ -61,6 +72,9 @@ TODO
 The MIT License (MIT)
 
 # Changelog
+
+## 2.1.0
+- add `ignore` support
 
 ## 2.0.0
 
